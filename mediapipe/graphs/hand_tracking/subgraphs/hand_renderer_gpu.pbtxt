@@ -1,0 +1,32 @@
+# MediaPipe graph to render hand landmarks and some related debug information.
+
+type: "HandRendererSubgraph"
+
+# GPU buffer. (GpuBuffer)
+input_stream: "IMAGE:input_image"
+# Collection of detected/predicted hands, each represented as a list of
+# landmarks. (std::vector<NormalizedLandmarkList>)
+#input_stream: "LANDMARKS:multi_hand_landmarks"
+# Handedness of the detected hand (i.e. is hand left or right).
+# (std::vector<ClassificationList>)
+#input_stream: "HANDEDNESS:multi_handedness"
+# Regions of interest calculated based on palm detections.
+# (std::vector<NormalizedRect>)
+#input_stream: "NORM_RECTS:0:multi_palm_rects"
+# Regions of interest calculated based on landmarks.
+# (std::vector<NormalizedRect>)
+#input_stream: "NORM_RECTS:1:multi_hand_rects"
+# Detected palms. (std::vector<Detection>)
+#input_stream: "DETECTIONS:palm_detections"
+
+# Updated GPU buffer. (GpuBuffer)
+output_stream: "IMAGE:output_image"
+
+
+# Draws annotations and overlays them on top of the input images. Consumes
+# a vector of RenderData objects and draws each of them on the input frame.
+node {
+  calculator: "AnnotationOverlayCalculator"
+  input_stream: "IMAGE_GPU:input_image"
+  output_stream: "IMAGE_GPU:output_image"
+}
